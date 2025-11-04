@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAM Browser ONNX Demo</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Segment Anything Model - Browser Demo</h1>
+            <p class="subtitle">Image embedding via Python backend • Mask inference in browser with ONNX Runtime Web</p>
+        </header>
+
+        <div class="controls-panel">
+            <div class="control-group">
+                <label for="modelSelect">Model:</label>
+                <select id="modelSelect">
+                    <option value="">Select model...</option>
+                    <option value="vit_b">ViT-B (Base)</option>
+                    <option value="vit_l">ViT-L (Large)</option>
+                    <option value="vit_h">ViT-H (Huge)</option>
+                </select>
+                <span id="modelStatus" class="status-badge"></span>
+            </div>
+
+            <div class="control-group">
+                <label for="imageUpload" class="file-label">
+                    <input type="file" id="imageUpload" accept="image/*" disabled>
+                    <span class="btn btn-primary">Upload Image</span>
+                </label>
+                <span id="uploadStatus" class="status-badge"></span>
+            </div>
+
+            <div class="control-group">
+                <button id="undoBtn" class="btn btn-secondary" disabled>Undo Last Click</button>
+                <button id="clearBtn" class="btn btn-secondary" disabled>Clear All</button>
+                <button id="exportBtn" class="btn btn-success" disabled>Export ROIs (JSON)</button>
+            </div>
+
+            <div class="control-group slider-group">
+                <label for="dilationSlider">Dilation Radius: <span id="dilationValue">0</span>px</label>
+                <input type="range" id="dilationSlider" min="0" max="50" value="0" disabled>
+            </div>
+
+            <div class="control-group">
+                <div class="info-box">
+                    <div class="info-row">
+                        <span class="point-indicator positive"></span>
+                        <span>Left click: Positive point</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="point-indicator negative"></span>
+                        <span>Right click: Negative point</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Scroll: Zoom in/out</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Drag: Pan (when zoomed)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="canvas"></canvas>
+            <div id="toast" class="toast"></div>
+            <div id="loadingOverlay" class="loading-overlay">
+                <div class="spinner"></div>
+                <p>Processing...</p>
+            </div>
+        </div>
+
+        <div class="stats-panel">
+            <div class="stat-item">
+                <span class="stat-label">Image:</span>
+                <span id="imageInfo">No image loaded</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Clicks:</span>
+                <span id="clickCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Mask Area:</span>
+                <span id="maskArea">0 px²</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">ONNX Runtime:</span>
+                <span id="runtimeInfo">Not initialized</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ONNX Runtime Web -->
+    <script src="/static/vendor/onnxruntime-web.min.js"></script>
+
+    <!-- App logic -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
